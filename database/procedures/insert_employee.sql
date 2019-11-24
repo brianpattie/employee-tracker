@@ -1,3 +1,4 @@
+DROP PROCEDURE IF EXISTS Employee_info.insert_employee;
 DELIMITER //
 CREATE PROCEDURE Employee_info.insert_employee (
 	IN new_name VARCHAR(45),
@@ -10,6 +11,7 @@ CREATE PROCEDURE Employee_info.insert_employee (
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 		BEGIN
+			SIGNAL SQLSTATE '45000';
 			ROLLBACK;
 		END;
 	START TRANSACTION;

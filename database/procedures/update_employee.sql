@@ -1,3 +1,4 @@
+DROP PROCEDURE IF EXISTS Employee_info.update_employee;
 DELIMITER //
 CREATE PROCEDURE Employee_info.update_employee (
 	IN target_id_employee INT,
@@ -11,6 +12,7 @@ CREATE PROCEDURE Employee_info.update_employee (
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 		BEGIN
+			SIGNAL SQLSTATE '45000';
 			ROLLBACK;
 		END;
 	START TRANSACTION;

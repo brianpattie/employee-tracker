@@ -1,3 +1,4 @@
+DROP PROCEDURE IF EXISTS Employee_info.search_by_all;
 DELIMITER //
 CREATE PROCEDURE Employee_info.search_by_all (
 	IN name VARCHAR(45),

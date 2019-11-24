@@ -1,3 +1,4 @@
+DROP PROCEDURE IF EXISTS Employee_info.delete_employee;
 DELIMITER //
 CREATE PROCEDURE Employee_info.delete_employee (
 	IN target_id_employee INT
@@ -5,6 +6,7 @@ CREATE PROCEDURE Employee_info.delete_employee (
 BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 		BEGIN
+			SIGNAL SQLSTATE '45000';
 			ROLLBACK;
 		END;
 	START TRANSACTION;
