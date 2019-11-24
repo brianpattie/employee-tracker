@@ -1,73 +1,59 @@
 const express       = require("express")
 const bodyParser    = require("body-parser")
-const db            = require("db_api.js")
+const db            = require("./db_api.js")
 
-// Handler Functions
+// ---- Request Handler Functions ----
 function insertHandler(req, res) { //  TODO
 
-    // Pull args from request
-
-    insertEmployee(testObj)
+    db.insert(req.body)
     .then(results => {
-        // Respond with success code
-        console.log("Resolved:")
-        console.log(results)
+        res.status(200)
+        res.json(results)
     })
     .catch(error => {
-        // Respond with failure code
-        console.log("Rejected:")
-        console.log(error)
+        res.status(500)
+        res.send("There was an error processing your request")
     })
 }
 
 function updateHandler(req, res) { // TODO
 
-    // Pull args from request
-
-    insertEmployee(testObj)
+    db.update(req.body)
     .then(results => {
-        // Respond with success code
-        console.log("Resolved:")
-        console.log(results)
+        res.status(200)
+        res.json(results)
     })
     .catch(error => {
-        // Respond with failure code
-        console.log("Rejected:")
-        console.log(error)
+        res.status(500)
+        res.send("There was an error processing your request")
     })
 }
 
 function deleteHandler(req, res) { // TODO
 
-    // Pull args from request
-
-    insertEmployee(testObj)
+    db.delete(req.body)
     .then(results => {
-        // Respond with success code
-        console.log("Resolved:")
-        console.log(results)
+        res.status(200)
+        res.json(results)
     })
     .catch(error => {
-        // Respond with failure code
-        console.log("Rejected:")
-        console.log(error)
+        res.status(500)
+        res.send("There was an error processing your request")
     })
 }
 
 function searchHandler(req, res) { // TODO
+    console.log('/search request received')
+    console.log(req.body)
 
-    // Pull args from request
-
-    insertEmployee(testObj)
+    db.search(req.body)
     .then(results => {
-        // Respond with success code
-        console.log("Resolved:")
-        console.log(results)
+        res.status(200)
+        res.json(results)
     })
     .catch(error => {
-        // Respond with failure code
-        console.log("Rejected:")
-        console.log(error)
+        res.status(500)
+        res.send("There was an error processing your request")
     })
 }
 
@@ -76,12 +62,12 @@ function searchHandler(req, res) { // TODO
 const app   = express();
 const port  = 3001;
 
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.post("/insert", insertHandler);
 app.post("/update", updateHandler);
 app.post("/delete", deleteHandler);
+app.post("/search", searchHandler);
 
-app.get("/search", searchHandler);
-
-app.listen(port);
+app.listen(port, () => { console.log(`Listening on port ${port}`)});
