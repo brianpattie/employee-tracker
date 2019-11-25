@@ -13,9 +13,9 @@ class App extends React.Component {
         super()
         this.state = {
             modalIsOpen:        false,
+            modalTitle:         'Add Employee',
             modalInstruction:   '',
             notificationText:   '',
-            new_employee:       null,
             id_employee:        null,
             name:               null,
             position:           null,
@@ -38,20 +38,58 @@ class App extends React.Component {
                         contentLabel={"Employee"}
                     >
                         <div id="modal-form">
-                            <div>{this.state.modalInstruction}</div>
-                            <div id="modal-notification">{this.notificationText}</div>
-                            <input type="text" name="name" onChange={this.changeHandler} placeholder="Name"></input>
-                            <input type="text" name="position" onChange={this.changeHandler} placebolder="Position"></input>
-                            <input type="number" name="salary" onChange={this.changeHandler} placebolder="Salary"></input>
-                            <input type="date" name="date_hired" onChange={this.changeHandler} placebolder="Date Hired"></input>
-                            <input type="text" name="email_address" onChange={this.changeHandler} placebolder="Email"></input>
-                            <input type="text" name="phone_number" onChange={this.changeHandler} placebolder="Phone Number"></input>
-                            <button onClick={this.submit}>Submit</button>
+                            <div className="row">
+                                <h3 className="modal-title">{this.state.modalTitle}</h3>
+                            </div>
+
+                            <div className="row">
+                                <div className="modal-instruction col">{this.state.modalInstruction}</div>
+                                <div id="modal-notification" className="col">{this.state.notificationText}</div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col">
+                                    <div>Name</div>
+                                    <input type="text" name="name" onChange={this.changeHandler}></input>
+                                </div>
+                                <div className="col">
+                                    <div>Position</div>
+                                    <input type="text" name="position" onChange={this.changeHandler}></input>
+                                </div>
+                                <div className="col">
+                                    <div>Email</div>
+                                    <input type="text" name="email_address" onChange={this.changeHandler}></input>
+                                </div>
+                                <div className="col">
+                                    <div>Phone Number</div>
+                                    <input type="text" name="phone_number" onChange={this.changeHandler}></input>
+                                </div>
+                                <div className="col">
+                                    <div>Salary</div>
+                                    <input type="number" name="salary" onChange={this.changeHandler}></input>
+                                </div>
+                                <div className="col">
+                                    <div>Date Hired</div>
+                                    <input type="date" name="date_hired" onChange={this.changeHandler}></input>
+                                </div>
+                                <div className="col">
+                                    <button onClick={this.submit}>Submit</button>
+                                </div>
+                            </div>
+
                         </div>
                     </Modal>
-        <div id="notification">{this.state.notificationText}</div>
-                    <button onClick={this.openAddModal}>Add Employee</button>
-                    <Search setAppState={this.updateState}/>
+                    <div id="notification">{this.state.notificationText}</div>
+                    <div className="row">
+                        <div className="col">
+                            <Search setAppState={this.updateState}/>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            <button onClick={this.openAddModal}>Add Employee</button>
+                        </div>
+                    </div>
                     <EmployeeList employees={this.state.employees} appState={this.state} setAppState={this.updateState} openEditModal={this.openEditModal}/>
                 </div>
             </div>
@@ -73,7 +111,8 @@ class App extends React.Component {
     openAddModal = () => {
         this.setState({
             modalIsOpen: true,
-            modalInstruction: 'All fields are required.',
+            modalTitle: 'Add Employee',
+            modalInstruction: 'All fields are required',
             id_employee: null
         })
     }
@@ -81,15 +120,22 @@ class App extends React.Component {
     openEditModal = (employee) => {
         this.setState({
             modalIsOpen: true,
-            modalInstruction: 'Only fields with values will be changed.',
+            modalTitle: `Edit ${employee.name}`,
+            modalInstruction: 'Only fields with values will be changed',
             ...employee
         })
     }
 
     closeModal = () => {
         this.setState({
-            modalIsOpen: false,
-            activeEmployee: {}
+            modalIsOpen:    false,
+            id_employee:    null,
+            name:           null,
+            position:       null,
+            salary:         null,
+            date_hired:     null,
+            phone_number:   null,
+            email_address:  null,
         })
     }
 
@@ -145,7 +191,7 @@ class App extends React.Component {
     }
 }
 
-let modalStyle = { // Edit These Styles
+let modalStyle = {
     content : {
         top                   : '50%',
         left                  : '50%',

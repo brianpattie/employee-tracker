@@ -6,24 +6,66 @@
 
 .container {
   margin: auto;
-  width: 800px;
+  width: 1200px;
   background-color: #E1E5F2;
-
+  margin-top: 150px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
-.btn {
-  margin: auto;
-  width: 80px;
-  height: 30px;
-  border-width: 0;
-  border-radius: 5px;
-  color: #FFFFFF
+.input-label {
+  text-align: left;
 }
 
-#save {
-  background-color: #BFDBF7;
+.modal-title {
+  margin-top: 0px;
 }
 
-#load {
-  background-color: #1F7A8C;
+.modal-instruction {
+  width: 45%;
 }
+
+#modal-notification {
+  width: 45%;
+}
+
+#notification {
+  height: 20px;
+  padding-top: 5px;
+}
+
+#employee-list {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.row {
+  display: block
+}
+
+.col {
+  display: inline-block;
+  padding: 5px;
+}
+
+.search-text {
+  width: 120px;
+}
+
+.search-num {
+  width: 100px;
+}
+
+.search-date {
+  width: 130px;
+}
+
+.table-data-col {
+  width: 15%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+.table-btn-col { width: 10% }
+
+tr:nth-child(even) {background: #CCC}
+tr:nth-child(odd) {background: #FFF}
