@@ -4,10 +4,6 @@ import React from 'react';
 class EmployeeList extends React.Component {
 
     render() {
-        // return this.props.employees.map((employee, index) => (
-        //     <Employee key={employee.id_employee} employee={employee} appState={this.props.appState} setAppState={this.props.setAppState}/>
-        // ))
-
         return (
             <div id="employee-list">
                 {this.props.employees.map((employee, index) => (
@@ -37,7 +33,7 @@ class Employee extends React.Component {
     }
 
     remove = (event) => {
-        let id = this.props.employee.id_employee
+        let { id, name } = this.props.employee
 
         let url = `http://${window.location.hostname}:3001/delete`
         let params = {
@@ -51,16 +47,22 @@ class Employee extends React.Component {
         fetch(url, params)
         .then(response => { return response.json() })
         .then(response => {
-            this.props.setAppState({ employees: this.props.appState.employees.filter((employee) => { return employee.id_employee !== id })})
+            this.props.setAppState({
+                employees: this.props.appState.employees.filter((employee) => {
+                     return employee.id_employee !== id 
+                }),
+                notificationText: `${name} deleted`
+            })
         })
         .catch((error) => {
             console.log(error)
-            // TODO Update Notification State to say "There was an error processing your request"
+            this.props.setAppState({
+                notificationText: 'There was an error processing your request'
+            })
         })
     }
 
     edit = (event) => {
-        // console.log(this.props.openEditModal)
         this.props.openEditModal(this.props.employee)
     }
 

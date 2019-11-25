@@ -13,6 +13,7 @@ class App extends React.Component {
         super()
         this.state = {
             modalIsOpen:        false,
+            modalInstruction:   '',
             notificationText:   '',
             new_employee:       null,
             id_employee:        null,
@@ -37,6 +38,8 @@ class App extends React.Component {
                         contentLabel={"Employee"}
                     >
                         <div id="modal-form">
+                            <div>{this.state.modalInstruction}</div>
+                            <div id="modal-notification">{this.notificationText}</div>
                             <input type="text" name="name" onChange={this.changeHandler} placeholder="Name"></input>
                             <input type="text" name="position" onChange={this.changeHandler} placebolder="Position"></input>
                             <input type="number" name="salary" onChange={this.changeHandler} placebolder="Salary"></input>
@@ -46,6 +49,7 @@ class App extends React.Component {
                             <button onClick={this.submit}>Submit</button>
                         </div>
                     </Modal>
+        <div id="notification">{this.state.notificationText}</div>
                     <button onClick={this.openAddModal}>Add Employee</button>
                     <Search setAppState={this.updateState}/>
                     <EmployeeList employees={this.state.employees} appState={this.state} setAppState={this.updateState} openEditModal={this.openEditModal}/>
@@ -58,6 +62,10 @@ class App extends React.Component {
         this.setState(obj)
     }
 
+    updateEmployeeList = () => {
+
+    }
+
     changeHandler = (event) => {
         this.setState({[event.target.name]: event.target.value})
     }
@@ -65,6 +73,7 @@ class App extends React.Component {
     openAddModal = () => {
         this.setState({
             modalIsOpen: true,
+            modalInstruction: 'All fields are required.',
             id_employee: null
         })
     }
@@ -72,6 +81,7 @@ class App extends React.Component {
     openEditModal = (employee) => {
         this.setState({
             modalIsOpen: true,
+            modalInstruction: 'Only fields with values will be changed.',
             ...employee
         })
     }
@@ -85,6 +95,15 @@ class App extends React.Component {
 
     submit = () => { // Submit either insert or update based on state.id_employee value
         let { id_employee, name, position, salary, date_hired, phone_number, email_address } = this.state
+        let new_employee = {
+            id_employee:    id_employee,
+            name:           name,
+            position:       position,
+            salary:         salary,
+            date_hired:     date_hired,
+            phone_number:   phone_number,
+            email_address:  email_address
+        }
 
         let path = id_employee ? 'update' : 'insert';
 
@@ -94,28 +113,34 @@ class App extends React.Component {
             headers: {
                 'content-type': 'application/json; charset=UTF-8'
             },
-            body: JSON.stringify({
-                id_employee:    id_employee,
-                name:           name,
-                position:       position,
-                salary:         salary,
-                date_hired:     date_hired,
-                phone_number:   phone_number,
-                email_address:  email_address
-            })
+            body: JSON.stringify(new_employee)
         }
 
         fetch(url, params)
         .then(response => { return response.json() })
         .then(response => {
-            console.log('Success!')
+
+            if (id_employee) {
+                this.setState({ 
+                    employees: this.state.employees.map((employee) => {
+                        return employee.id_employee === id_employee ? new_employee : employee;
+                    }),
+                    notificationText: `${name} updated`
+                })
+            } else {
+                this.setState({
+                    notificationText: `${name} added`
+                })
+            }
+
             this.closeModal()
-            // TODO Update Notification State to say "Insert/Update Successful"
 
         })
         .catch((error) => {
             console.log(error)
-            // TODO Update Notification State to say "There was an error processing your request"
+            this.setState({
+                notificationText: 'There was an error processing your request'
+            })
         })
     }
 }

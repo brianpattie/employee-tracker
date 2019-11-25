@@ -49,12 +49,16 @@ class Search extends React.Component {
         fetch(url, params)
         .then(response => { return response.json() })
         .then(response => {
-            console.log(response)
-            this.props.setAppState({ employees: response[0] })
+            this.props.setAppState({ 
+                employees: response[0],
+                notificationText: ''
+            })
         })
         .catch((error) => {
             console.log(error)
-            // TODO Update Notification State to say "There was an error processing your request"
+            this.props.setAppState({
+                notificationText: 'There was an error processing your request'
+            })
         })
     }
 }
